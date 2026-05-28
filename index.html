@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zia Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand"><h1>🌐 Zia Website</h1></div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+            </ul>
+            <div class="cart-icon"><a href="#cart">🛒 Cart (<span id="cart-count">0</span>)</a></div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Welcome to Zia Website</h2>
+            <p>Explore Products • Read Articles • Discover Portfolio</p>
+            <div class="hero-buttons">
+                <a href="products.html" class="btn btn-primary">Shop Now</a>
+                <a href="blog.html" class="btn btn-secondary">Read Blog</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-products">
+        <div class="container">
+            <h3>🛍️ Featured Products</h3>
+            <div class="products-grid" id="featured-products"></div>
+        </div>
+    </section>
+
+    <section class="latest-blog">
+        <div class="container">
+            <h3>📝 Latest Blog Posts</h3>
+            <div class="blog-grid" id="latest-posts"></div>
+        </div>
+    </section>
+
+    <section class="portfolio-highlights">
+        <div class="container">
+            <h3>💼 Portfolio Highlights</h3>
+            <div class="portfolio-grid" id="portfolio-items"></div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="container">
+            <h3>Subscribe to Our Newsletter</h3>
+            <form id="newsletter-form">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Zia Website by Zia Ur Rehman. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+          </html>
