@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Zia Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🌐 Zia Website</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+            </ul>
+            <div class="cart-icon">
+                <a href="#cart">🛒 Cart (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section style="background: linear-gradient(135deg, #4CAF50, #2196F3); color: white; padding: 50px 20px; text-align: center;">
+        <div class="container">
+            <h2>📝 Our Blog</h2>
+            <p>Read amazing articles and tutorials</p>
+        </div>
+    </section>
+
+    <!-- Blog Posts -->
+    <section style="padding: 60px 20px;">
+        <div class="container">
+            <div class="blog-grid" id="all-posts">
+                <!-- Blog posts will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Zia Website by Zia Ur Rehman. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            
+            const container = document.getElementById('all-posts');
+            container.innerHTML = blogPosts.map(post => `
+                <div class="blog-card">
+                    <img src="${post.image}" alt="${post.title}">
+                    <div class="blog-card-content">
+                        <small style="color: var(--primary-color); font-weight: bold;">${post.category}</small>
+                        <h4>${post.title}</h4>
+                        <p>${post.excerpt}</p>
+                        <small>By ${post.author} | ${new Date(post.date).toLocaleDateString()}</small>
+                        <br><br>
+                        <a href="#" class="btn btn-secondary">Read More</a>
+                    </div>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>
