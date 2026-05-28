@@ -2,9 +2,8 @@
    ZIA WEBSITE - MAIN JAVASCRIPT FILE
    ===================================================== */
 
-// ========== SAMPLE DATA ==========
+// ========== DEFAULT DATA ==========
 
-// Sample Products Data
 const products = [
     {
         id: 1,
@@ -56,7 +55,6 @@ const products = [
     }
 ];
 
-// Sample Blog Posts Data
 const blogPosts = [
     {
         id: 1,
@@ -87,7 +85,6 @@ const blogPosts = [
     }
 ];
 
-// Sample Portfolio Items Data
 const portfolioItems = [
     {
         id: 1,
@@ -125,13 +122,14 @@ function saveCart(cart) {
 }
 
 function addToCart(productId) {
-    const cart = getCart();
-    const product = products.find(p => p.id === productId);
-    
+    const allProducts = JSON.parse(localStorage.getItem('allProducts')) || products;
+    const product = allProducts.find(p => p.id === productId);
+
     if (!product) return;
-    
+
+    const cart = getCart();
     const existingItem = cart.find(item => item.id === productId);
-    
+
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
@@ -140,9 +138,9 @@ function addToCart(productId) {
             quantity: 1
         });
     }
-    
+
     saveCart(cart);
-    alert(`${product.name} added to cart!`);
+    alert(`✅ ${product.name} added to cart!`);
 }
 
 function removeFromCart(productId) {
@@ -164,16 +162,44 @@ function updateCartCount() {
 function renderFeaturedProducts() {
     const container = document.getElementById('featured-products');
     if (!container) return;
-    
-    const featured = products.slice(0, 3);
-    
+
+    const allProducts = JSON.parse(localStorage.getItem('allProducts')) || products;
+    const featured = allProducts.slice(0, 3);
+
     container.innerHTML = featured.map(product => `
         <div class="product-card">
             <img src="${product.image}" alt="${product.name}">
             <div class="product-card-content">
                 <h4>${product.name}</h4>
                 <p>${product.description}</p>
-                <div class="product-price">$${product.price}</div>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+                <div class="product-card-actions">
+                    <button class="btn-add-cart" onclick="addToCart(${product.id})">
+                        🛒 Add to Cart
+                    </button>
+                    <button class="btn-view">
+                        👁️ View
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderAllProducts() {
+    const container = document.getElementById('all-products');
+    if (!container) return;
+
+    const allProducts = JSON.parse(localStorage.getItem('allProducts')) || products;
+
+    container.innerHTML = allProducts.map(product => `
+        <div class="product-card">
+            <img src="${product.image}" alt="${product.name}">
+            <div class="product-card-content">
+                <h4>${product.name}</h4>
+                <p>${product.description}</p>
+                <small>Category: ${product.category}</small>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
                 <div class="product-card-actions">
                     <button class="btn-add-cart" onclick="addToCart(${product.id})">
                         🛒 Add to Cart
@@ -192,9 +218,10 @@ function renderFeaturedProducts() {
 function renderLatestBlogPosts() {
     const container = document.getElementById('latest-posts');
     if (!container) return;
-    
-    const latest = blogPosts.slice(0, 3);
-    
+
+    const allBlog = JSON.parse(localStorage.getItem('allBlog')) || blogPosts;
+    const latest = allBlog.slice(0, 3);
+
     container.innerHTML = latest.map(post => `
         <div class="blog-card">
             <img src="${post.image}" alt="${post.title}">
@@ -210,14 +237,35 @@ function renderLatestBlogPosts() {
     `).join('');
 }
 
+function renderAllBlogPosts() {
+    const container = document.getElementById('all-posts');
+    if (!container) return;
+
+    const allBlog = JSON.parse(localStorage.getItem('allBlog')) || blogPosts;
+
+    container.innerHTML = allBlog.map(post => `
+        <div class="blog-card">
+            <img src="${post.image}" alt="${post.title}">
+            <div class="blog-card-content">
+                <small style="color: var(--primary-color); font-weight: bold;">${post.category}</small>
+                <h4>${post.title}</h4>
+                <p>${post.excerpt}</p>
+                <small>By ${post.author} | ${new Date(post.date).toLocaleDateString()}</small>
+                <br><br>
+                <a href="#" class="btn btn-secondary">Read More</a>
+            </div>
+        </div>
+    `).join('');
+}
+
 // ========== PORTFOLIO RENDERING ==========
 
 function renderPortfolioHighlights() {
     const container = document.getElementById('portfolio-items');
     if (!container) return;
-    
+
     const highlights = portfolioItems.slice(0, 3);
-    
+
     container.innerHTML = highlights.map(item => `
         <div class="portfolio-card">
             <img src="${item.image}" alt="${item.title}">
@@ -232,14 +280,32 @@ function renderPortfolioHighlights() {
     `).join('');
 }
 
+function renderAllPortfolioItems() {
+    const container = document.getElementById('all-portfolio');
+    if (!container) return;
+
+    container.innerHTML = portfolioItems.map(item => `
+        <div class="portfolio-card">
+            <img src="${item.image}" alt="${item.title}">
+            <div class="portfolio-card-content">
+                <h4>${item.title}</h4>
+                <p>${item.description}</p>
+                <small><strong>Tech Stack:</strong> ${item.technologies}</small>
+                <br><br>
+                <a href="#${item.id}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    `).join('');
+}
+
 // ========== FORM HANDLING ==========
 
 function handleNewsletterSubmit(event) {
     event.preventDefault();
     const email = event.target.querySelector('input[type="email"]').value;
-    
+
     if (email) {
-        alert(`Thank you for subscribing! Check your email at ${email}`);
+        alert(`✅ Thank you for subscribing! Check your email at ${email}`);
         event.target.reset();
     }
 }
@@ -248,9 +314,9 @@ function handleContactSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    
+
     console.log('Contact form data:', data);
-    alert('Thank you for your message! We will contact you soon.');
+    alert('✅ Thank you for your message! We will contact you soon.');
     event.target.reset();
 }
 
@@ -261,12 +327,15 @@ document.addEventListener('DOMContentLoaded', function() {
     renderFeaturedProducts();
     renderLatestBlogPosts();
     renderPortfolioHighlights();
-    
+    renderAllProducts();
+    renderAllBlogPosts();
+    renderAllPortfolioItems();
+
     const newsletterForm = document.getElementById('newsletter-form');
     if (newsletterForm) {
         newsletterForm.addEventListener('submit', handleNewsletterSubmit);
     }
-    
+
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', handleContactSubmit);
@@ -291,23 +360,27 @@ function formatDate(dateString) {
 }
 
 function searchProducts(query) {
-    return products.filter(product =>
+    const allProducts = JSON.parse(localStorage.getItem('allProducts')) || products;
+    return allProducts.filter(product =>
         product.name.toLowerCase().includes(query.toLowerCase()) ||
         product.description.toLowerCase().includes(query.toLowerCase())
     );
 }
 
 function filterProductsByCategory(category) {
-    if (category === 'all') return products;
-    return products.filter(product => product.category === category);
+    const allProducts = JSON.parse(localStorage.getItem('allProducts')) || products;
+    if (category === 'all') return allProducts;
+    return allProducts.filter(product => product.category === category);
 }
 
 function getProductById(id) {
-    return products.find(product => product.id === id);
+    const allProducts = JSON.parse(localStorage.getItem('allProducts')) || products;
+    return allProducts.find(product => product.id === id);
 }
 
 function getBlogPostById(id) {
-    return blogPosts.find(post => post.id === id);
+    const allBlog = JSON.parse(localStorage.getItem('allBlog')) || blogPosts;
+    return allBlog.find(post => post.id === id);
 }
 
 function getPortfolioItemById(id) {
